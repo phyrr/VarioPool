@@ -1,0 +1,10 @@
+target/
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+.DS_Store
+*.tmp
+node_modules/
+dist/

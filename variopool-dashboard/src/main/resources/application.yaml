@@ -1,0 +1,26 @@
+server:
+  port: 9009
+
+spring:
+  application:
+    name: variopool-dashboard
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+
+variopool:
+  dashboard:
+    auth:
+      username: admin
+      password: admin
+    nacos:
+      server-addr: 127.0.0.1:8848
+    redis:
+      config-key: variopool:config:variopool-example
+      topic: variopool:config:refresh:variopool-example
+    apps:
+      - name: variopool-example
+        data-id: variopool-example.yaml
+        group: DEFAULT_GROUP
+        agent-url: http://127.0.0.1:9090

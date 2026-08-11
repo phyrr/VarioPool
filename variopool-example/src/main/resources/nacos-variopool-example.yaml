@@ -1,0 +1,11 @@
+variopool:
+  enable: true
+  executors:
+    - pool-id: order-pool
+      core-pool-size: 4
+      maximum-pool-size: 8
+      queue-capacity: 200
+      work-queue: ResizableCapacityLinkedBlockingQueue
+      rejected-handler: CallerRunsPolicy
+      keep-alive-time: 60
+      allow-core-thread-time-out: false

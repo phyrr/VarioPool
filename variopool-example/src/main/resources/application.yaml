@@ -1,0 +1,36 @@
+server:
+  port: 9090
+
+spring:
+  application:
+    name: variopool-example
+  config:
+    import: optional:nacos:variopool-example.yaml
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        file-extension: yaml
+        group: DEFAULT_GROUP
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+
+variopool:
+  enable: true
+  nacos:
+    data-id: variopool-example.yaml
+    group: DEFAULT_GROUP
+  redis:
+    config-key: variopool:config:variopool-example
+    topic: variopool:config:refresh:variopool-example
+  executors:
+    - pool-id: order-pool
+      core-pool-size: 4
+      maximum-pool-size: 8
+      queue-capacity: 200
+      work-queue: ResizableCapacityLinkedBlockingQueue
+      rejected-handler: CallerRunsPolicy
+      keep-alive-time: 60
+      allow-core-thread-time-out: false

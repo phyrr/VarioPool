@@ -1,0 +1,46 @@
+services:
+  nacos:
+    image: nacos/nacos-server:latest
+    container_name: variopool-nacos
+    environment:
+      MODE: standalone
+      PREFER_HOST_MODE: hostname
+      JVM_XMS: 256m
+      JVM_XMX: 512m
+      # Nacos 2.2.1+ 必填，本地开发用固定值即可
+      NACOS_AUTH_TOKEN: VkFyaW9Qb29sTmFjb3NTZWNyZXRLZXlGb3JMb2NhbERldjIwMjY=
+      NACOS_AUTH_IDENTITY_KEY: variopool
+      NACOS_AUTH_IDENTITY_VALUE: variopool-local
+    ports:
+      - "8848:8848"   # API / 客户端连接
+      - "8081:8080"   # Nacos 3.x 控制台（浏览器访问这个）
+      - "9848:9848"   # Nacos 2.x 客户端 gRPC
+      - "9849:9849"   # Nacos 2.x 服务端 gRPC
+    volumes:
+      - nacos-data:/home/nacos/data
+      - nacos-logs:/home/nacos/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:8848/nacos/v1/console/health/readiness"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+  redis:
+    image: redis:7-alpine
+    container_name: variopool-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  nacos-data:
+  nacos-logs:
+  redis-data:
